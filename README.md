@@ -21,6 +21,8 @@ CoinGecko API ──► Raw Table ──► Stream ──► Dynamic Tables (Ano
 - **Dynamic Tables** — Rolling aggregations and Z-score anomaly detection
 - **Alerts** — Automated notifications when anomalies are detected
 - **Streamlit** — Interactive monitoring dashboard
+- **Cortex LLM (AI)** — Natural-language anomaly summaries using `mistral-large2`
+- **Cortex ML** — Unsupervised anomaly detection model (`SNOWFLAKE.ML.ANOMALY_DETECTION`)
 
 ## Setup
 
@@ -38,6 +40,7 @@ Run the SQL scripts in `setup/` in order (01 through 10):
 -- 08_tasks.sql
 -- 09_alerts.sql
 -- 10_grants.sql
+-- 11_cortex_ai.sql
 ```
 
 ## Data Source
@@ -56,6 +59,17 @@ BTC, ETH, SOL, XRP, ADA
 Uses Z-score method:
 - Price anomaly: price change > 2σ from rolling 1-hour mean
 - Volume anomaly: volume spike > 3x rolling 1-hour average
+
+## Cortex AI Integration
+
+### LLM-Powered Insights (Cortex Complete)
+- **Anomaly Summarizer**: A stored procedure (`SUMMARIZE_ANOMALIES()`) that uses `mistral-large2` to generate natural-language market analysis of detected anomalies
+- **Per-Anomaly Explanations**: A view (`CRYPTO_ANOMALY_INSIGHTS`) that generates one-sentence trader-friendly explanations for each anomaly in real-time
+
+### ML Anomaly Detection (Cortex ML)
+- **Unsupervised Model**: Uses `SNOWFLAKE.ML.ANOMALY_DETECTION` trained on historical price data
+- **Multi-Series Support**: Trains across all tracked coins (BTC, ETH, SOL, XRP, ADA) simultaneously
+- **Complements Z-Score**: ML model catches patterns that statistical thresholds miss (trend-aware, seasonality-aware)
 
 ## Teardown
 

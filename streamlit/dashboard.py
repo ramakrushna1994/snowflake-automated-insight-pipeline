@@ -129,6 +129,54 @@ if not anomaly_log_df.empty:
 else:
     st.success("No anomalies detected in the selected time range.")
 
+# --- AI Insights (Cortex LLM) ---
+st.subheader("AI Insights (Powered by Snowflake Cortex)")
+
+if st.button("Generate AI Summary of Recent Anomalies"):
+    with st.spinner("Cortex AI is analyzing anomalies..."):
+        try:
+            ai_result = session.sql("CALL SUMMARIZE_ANOMALIES()").collect()
+            st.info(ai_result[0][0])
+        except Exception as e:
+            st.warning(f"AI summary unavailable: {e}")
+
+# Per-anomaly AI insights
+ai_insights_df = session.sql(f"""
+    SELECT ticker, ingested_at, anomaly_type, direction,
+           ROUND(price_usd, 2) AS price, ai_insight
+    FROM CRYPTO_ANOMALY_INSIGHTS
+    WHERE 1=1 {ticker_clause}
+    ORDER BY ingested_at DESC
+    LIMIT 5
+""").to_pandas()
+
+if not ai_insights_df.empty:
+    st.markdown("**Per-Anomaly AI Explanations**")
+    for _, row in ai_insights_df.iterrows():
+        st.markdown(f"- **{row['TICKER']}** ({row['ANOMALY_TYPE']}) — {row['AI_INSIGHT']}")
+else:
+    st.caption("No recent anomalies to analyze with AI.")
+
+# --- ML Model Anomalies ---
+st.subheader("ML Model Anomaly Detection")
+try:
+    ml_df = session.sql(f"""
+        SELECT series AS ticker, ts AS timestamp, y AS value,
+               forecast, is_anomaly, percentile, distance
+        FROM CRYPTO_ML_ANOMALIES
+        WHERE is_anomaly = TRUE
+        ORDER BY ts DESC
+        LIMIT 20
+    """).to_pandas()
+
+    if not ml_df.empty:
+        st.markdown(f"**{len(ml_df)} anomalies** detected by ML model")
+        st.dataframe(ml_df, use_container_width=True)
+    else:
+        st.success("ML model found no anomalies in recent data.")
+except Exception as e:
+    st.caption("ML model not yet trained. Run setup/11_cortex_ai.sql to enable.")
+
 # --- Pipeline Status ---
 st.subheader("Pipeline Status")
 col1, col2 = st.columns(2)
