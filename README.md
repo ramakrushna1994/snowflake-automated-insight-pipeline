@@ -1,5 +1,7 @@
 # Automated Insight Pipeline — Crypto Anomaly Detection
 
+> **DISCLAIMER: This project is for educational and learning purposes only. It is NOT financial advice. Do NOT use this pipeline, its outputs, or any AI-generated insights to make real trading or investment decisions. Cryptocurrency markets are highly volatile and speculative. The authors assume no liability for any financial losses incurred from using or misusing this project. Always consult a qualified financial advisor before making investment decisions.**
+
 Real-time cryptocurrency anomaly detection pipeline built on Snowflake.
 
 ## Architecture
@@ -74,3 +76,12 @@ Uses Z-score method:
 ## Teardown
 
 Run `teardown/cleanup.sql` to remove all objects.
+
+## License & Purpose
+
+This project was built as a learning exercise to demonstrate Snowflake's real-time data pipeline capabilities. It is intended solely for:
+- Learning Snowflake features (Streams, Tasks, Dynamic Tables, Alerts, Cortex AI)
+- Demonstrating end-to-end data pipeline architecture
+- Educational workshops and hackathons
+
+It is **not** intended for production use, live trading, or financial decision-making.
