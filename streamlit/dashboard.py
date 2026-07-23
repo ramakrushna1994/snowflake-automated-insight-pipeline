@@ -12,6 +12,8 @@ st.set_page_config(page_title="Crypto Anomaly Detection", layout="wide")
 st.title("Crypto Anomaly Detection Pipeline")
 st.caption("Real-time monitoring powered by Snowflake Streams, Dynamic Tables & Alerts")
 
+st.warning("DISCLAIMER: This dashboard is for educational and learning purposes only. It is NOT financial advice. Do NOT use any outputs or AI-generated insights here to make real trading or investment decisions. Always consult a qualified financial advisor.")
+
 # --- Sidebar filters ---
 st.sidebar.header("Filters")
 tickers = ["ALL", "BTC", "ETH", "SOL", "XRP", "ADA"]
