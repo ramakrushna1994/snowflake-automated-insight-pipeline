@@ -45,6 +45,8 @@ Run the SQL scripts in `setup/` in order (01 through 10):
 - **Primary**: CoinGecko free API (no API key required)
 - **Fallback**: Built-in data generator stored procedure for demo/testing
 
+> **Note:** Snowflake Trial accounts do not support External Access Integrations, so the CoinGecko API connection (scripts 04 and 05) will not work on trial accounts. Use the built-in data simulator (`CALL GENERATE_CRYPTO_TICKS(50)`) instead. The simulator injects realistic price movements with random anomalies (flash crashes, pump spikes, volume surges) for a full demo experience.
+
 ## Coins Tracked
 
 BTC, ETH, SOL, XRP, ADA
